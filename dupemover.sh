@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Make sure we've got fdupes
 dpkg -s 'fdupes' &> /dev/null
 
 if [ $? -ne 0 ]; then
@@ -11,7 +12,7 @@ source_path=$1
 dest_path=$2
 dupelist='dupelist'
 
-# Make sure user gave source_path                                                                                                                                                                           
+# Make sure user gave source_path
 if [ -z $source_path ]; then
     echo "You need to give me an source path and a destination path."
     echo "Something like 'dupe.sh <path/to/source/folder> <path/to/destination/folder>.'"
@@ -19,13 +20,13 @@ if [ -z $source_path ]; then
     exit 1
 fi
 
-# Make sure source_path is real                                                                                                                                                                             
+# Make sure source_path is real
 if ! [ -d "$source_path" ]; then
     echo "That source path isn't a real directory"
     exit 1
 fi
 
-# Make sure user gave dest_path                                                                                                                                                                             
+# Make sure user gave dest_path
 if [ -z $dest_path ]; then
     echo "You need to give me an source path and a destination path."
     echo "Something like 'dupe.sh <path/to/source/folder> <path/to/destination/folder>.'"
@@ -33,19 +34,18 @@ if [ -z $dest_path ]; then
     exit 1
 fi
 
-# Make sure dest_path is real                                                                                                                                                                               
+# Make sure dest_path is real
 if ! [ -d "$dest_path" ]; then
     echo "That output path isn't a real directory"
     exit 1
 fi
 
-# Make sure dest_path ends with /                                                                                                                                                                           
+# Make sure dest_path ends with /
 [[ "$dest_path" != */ ]] && dest_path="${dest_path}/"
 
-# Make dupelist file                                                                                                                                                                                        
-touch $dupelist #create file 'dupelist'                                                                                                                                                                     
-fdupes -rf $source_path > $dupelist #write 2nd+ dupes to file 'dupelist'                                                                                                                                    
-sed -i '/^$/d' $dupelist #remove blank lines                                                                                                                                                                
+# Make dupelist file
+fdupes -rf $source_path > $dupelist #write 2nd+ dupes to file 'dupelist'
+sed -i '/^$/d' $dupelist #remove blank lines                                                                                                                                                               
 
 n=1
 while read line; do
@@ -53,7 +53,6 @@ while read line; do
     PATH=${line%/*}
     NEWNAME="${n}${NAME}"
     NEWFILE="${dest_path}${NEWNAME}"
-#    echo $NEWFILE
     mv $line $NEWFILE                                                                                                                                                                                      
     n=$((n+1))
     done < $dupelist

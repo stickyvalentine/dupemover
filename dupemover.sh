@@ -1,9 +1,10 @@
-#!/bin/bash                                                                                                                                                                                                 
+#!/bin/bash
 
 dpkg -s 'fdupes' &> /dev/null
 
 if [ $? -ne 0 ]; then
     echo "fdupes is not installed but is required!"
+    exit 1
 fi
 
 source_path=$1

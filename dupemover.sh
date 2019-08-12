@@ -53,6 +53,6 @@ while read line; do
     PATH=${line%/*}
     NEWNAME="${n}${NAME}"
     NEWFILE="${dest_path}${NEWNAME}"
-    mv $line $NEWFILE                                                                                                                                                                                      
+    /bin/mv "$line" "$NEWFILE"
     n=$((n+1))
     done < $dupelist
